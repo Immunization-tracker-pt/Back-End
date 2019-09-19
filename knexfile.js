@@ -18,6 +18,9 @@ module.exports = {
     tableName: "immunization_tracker_migrations",
     directory: './data/migrations',
   },
+  seeds: {
+    directory: './data/seeds'
+  }
 
 
 };

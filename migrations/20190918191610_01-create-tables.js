@@ -61,7 +61,7 @@ exports.up = function(knex) {
             .onDelete('CASCADE')
             .onUpdate('CASCADE')
         pdd.integer('permission_requested').notNullable().unsigned()
-        pdd.integer('persmission_granted').notNullable().unsigned()
+        pdd.integer('permission_granted').notNullable().unsigned()
     })
 
   
