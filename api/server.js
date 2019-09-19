@@ -8,6 +8,7 @@ const cors = require('cors')
 // ROUTES
 const childrenRouter = require('./children/children-router.js')
 const parentsRouter = require('./parents/parents-router.js')
+const doctorsRouter = require('./doctors/doctors-router')
 
 const server = express()
 
@@ -18,6 +19,7 @@ server.use(cors())
 // ROUTES
 server.use('/api/children', childrenRouter)
 server.use('/api/parents', parentsRouter)
+server.use('/api/doctors', doctorsRouter)
 
 server.get('/', (req, res) => {
     res.send(`Immunization Tracker Back-End API BW Unit 4 - Travis Little WebPT6`)

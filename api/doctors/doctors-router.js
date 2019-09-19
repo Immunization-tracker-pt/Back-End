@@ -1,34 +1,33 @@
 const router = require('express').Router()
 
-const Parents = require('./parents-model.js')
+const Doctors = require('./doctors-model')
 
 
 router.get('/', (req, res) => {
-    Parents.find()
-        .then(parents => {
-            res.status(200).json(parents)
+    Doctors.find()
+        .then(doctors => {
+            res.status(200).json(doctors)
         })
         .catch(error => {
             res.status(500).json({
-                message: 'Could not get parents from server',
+                message: 'Could not get doctors from server',
                 dbError: error
             })
         })
 })
 
 router.post('/', (req, res) => {
-    const parent = req.body
-    Parents.add(parent)
-        .then(parent => {
-            res.status(201).json(parent)
+    const doctor = req.body
+    Doctors.add(doctor)
+        .then(doctor => {
+            res.status(201).json(doctor)
         })
         .catch(error => {
             res.status(500).json({
-                message: 'Could not add parent to server',
+                message: 'Could not add doctor to server',
                 dbError: error
             })
         })
 })
-
 
 module.exports = router
