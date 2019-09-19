@@ -1,0 +1,25 @@
+{
+    "name": "immunization-tracker-backend-webpt6",
+    "version": "1.0.0",
+    "description": "server api for Immunization Tracker, build week project Unit 4. WebPT6",
+    "main": "index.js",
+    "scripts": {
+        "server": "nodemon",
+        "start": "node index.js"
+    },
+    "keywords": [],
+    "author": "Travis Little",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cors": "^2.8.5",
+        "dotenv": "^8.1.0",
+        "express": "^4.17.1",
+        "helmet": "^3.21.0",
+        "jsonwebtoken": "^8.5.1",
+        "knex": "^0.19.4",
+        "sqlite3": "^4.1.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.19.2"
+    }
+}
