@@ -22,6 +22,6 @@ function findById(id) {
 function add(child) {
     return db('children').insert(child)
         .then(ids => {
-            return findById(ids[0])
+            return findById(ids[0]) // returns the new child object
         })
 }
