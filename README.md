@@ -65,7 +65,7 @@
 
 **GET** on `/api/parents`
 
-Returns a JSON array of all the parent accounts on the server
+Returns status 200 and a JSON array of all the parent accounts on the parents table.
 
 ```
 [
@@ -91,7 +91,7 @@ Database expects a JSON object of the new parent account:
 
 ```
 
-Returns a JSON object of the newly created parent account
+Returns status 201 with a JSON object of the newly created parent account in the parents table.
 
 ```
 {
@@ -103,5 +103,32 @@ Returns a JSON object of the newly created parent account
 
 ```
 
+Returns status 500 if a required field is missing or email is not unique
+
+```
+{
+  "message": "Could not add parent to server",
+  "dbError": {
+    "errno": 19,
+    "code": "SQLITE_CONSTRAINT"
+  }
+}
+```
+
+### Children Data
+
+**GET** on `/api/children`
+
+Returns status *200* with an array of all the children in the children table.
+
+```
+[
+  {
+    "id": 1,
+    "parent_id": 1,
+    "fullname": "Bobby Smith"
+  }
+]
+```
 
 
