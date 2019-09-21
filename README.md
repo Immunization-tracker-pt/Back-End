@@ -11,6 +11,12 @@
 - Express
 - Knex
 
+## Accesing the database endpoints
+
+**App database root URL:** `https://bw4-immunization.herokuapp.com/`
+
+Scroll down to End Points section for end points.
+
 ## Data Structures
 **Preliminary as of 9/20/2019**
 
@@ -65,7 +71,7 @@
 
 ### Parents Table
 
-**GET** on `/api/parents`
+**GET** on `https://bw4-immunization.herokuapp.com/api/parents`
 
 Returns status **200** and a JSON array of all the parent accounts on the parents table.
 
@@ -80,7 +86,7 @@ Returns status **200** and a JSON array of all the parent accounts on the parent
 ]
 ```    
 
-**POST** on `/api/parents`
+**POST** on `https://bw4-immunization.herokuapp.com/api/parents`
 
 Database expects a JSON object of the new parent account:
 
@@ -88,7 +94,7 @@ Database expects a JSON object of the new parent account:
 ```
 {
 	"name": "New Parents",      // Required
-	"email": "test1@test.com", // Required. Must be unique
+	"email": "test1@test.com",  // Required. Must be unique
 	"password": "test"          // Required. This will be hashed in future versions
 }
 
@@ -120,7 +126,7 @@ Returns status **500** if a required field is missing or email is not unique
 
 ### Children Table
 
-**GET** on `/api/children`
+**GET** on `https://bw4-immunization.herokuapp.com/api/children`
 
 Returns status **200** with an array of all the children in the children table.
 
@@ -134,7 +140,7 @@ Returns status **200** with an array of all the children in the children table.
 ]
 ```
 
-**POST** on `/api/children`
+**POST** on `https://bw4-immunization.herokuapp.com/api/children`
 
 Server expects a JSON object of the new child
 
@@ -160,7 +166,7 @@ Returns status **500** if a required field is missing
 
 ### Doctors Table
 
-**GET** on `/api/doctors`
+**GET** on `https://bw4-immunization.herokuapp.com/api/doctors`
 
 Returns status **200** with an array of all the doctors in the doctors table.
 
@@ -175,7 +181,7 @@ Returns status **200** with an array of all the doctors in the doctors table.
 ]
 ```
 
-**POST** on `/api/doctors`
+**POST** on `https://bw4-immunization.herokuapp.com/api/doctors`
 
 Server expects a JSON object of the new doctor
 
@@ -205,7 +211,7 @@ Returns status **500** if a required field is missing
 
 ### Immunization Table
 
-**GET** on `/api/immunizations`
+**GET** on `https://bw4-immunization.herokuapp.com/api/immunizations`
 
 Returns status **200** with an array of all the immunizations in the immunizations table.
 
@@ -222,7 +228,7 @@ Returns status **200** with an array of all the immunizations in the immunizatio
 ]
 ```
 
-**POST** on `/api/immunizations`
+**POST** on `https://bw4-immunization.herokuapp.com/api/immunizations`
 
 Server expects a JSON object of the new immunization
 
@@ -256,7 +262,7 @@ Returns status **500** if a required field is missing
 ### Parent Doctor Detail Table
 **END POINTS ARE NOT IMPLEMENTED FOR THIS TABLE YET**
 
-This table holds the data which links doctors to parents, and the data relevant between them (such as if the parents have granted access to the doctor to add/edit immunization records)
+This table holds the data which links doctors to parents, and the data relevant between them (such as if the parents have granted access to the doctor to add/edit immunization records). Data in this table will likely be incorporated into the existing  `/api/parents`, `/api/doctors`, `/api/immunizations` end points.
 ```
 {
     "id": 1,
