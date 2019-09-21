@@ -16,6 +16,26 @@ router.get('/', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    const { id } = req.params
+
+    Immunizations.findById(id)
+        .then(immunization => {
+
+            if(!immunization) {
+                res.status(404).json({ message: `Could not find immunization with ID: ${id}`})
+            }
+
+            res.status(200).json(immunization)
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Could not get immunization from server',
+                dbError: error
+            })
+        })
+})
+
 router.post('/', (req, res) => {
     const immunization = req.body
     Immunizations.add(immunization)

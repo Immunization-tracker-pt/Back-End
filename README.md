@@ -84,7 +84,24 @@ Returns status **200** and a JSON array of all the parent accounts on the parent
         "password": "test"
     }
 ]
-```    
+```
+
+**GET** on `https://bw4-immunization.herokuapp.com/api/parents/< ID >`
+
+Returns status **200** and a JSON object of the parent account with specified ID
+
+```
+[
+    {
+        "id": 1,
+        "name": "Smith Family",
+        "email": "test@test.com",
+        "password": "test"
+    }
+]
+```
+
+Returns status **404** if server could not find record with specified ID.
 
 **POST** on `https://bw4-immunization.herokuapp.com/api/parents`
 
@@ -140,6 +157,19 @@ Returns status **200** with an array of all the children in the children table.
 ]
 ```
 
+**GET** on `https://bw4-immunization.herokuapp.com/api/children/< ID >`
+
+Returns status **200** and a JSON object of the child with specified ID
+
+```
+  {
+    "id": 1,
+    "parent_id": 1,
+    "fullname": "Bobby Smith"
+  }
+```
+Returns status **404** if server could not find record with specified ID.
+
 **POST** on `https://bw4-immunization.herokuapp.com/api/children`
 
 Server expects a JSON object of the new child
@@ -180,6 +210,20 @@ Returns status **200** with an array of all the doctors in the doctors table.
   }
 ]
 ```
+
+**GET** on `https://bw4-immunization.herokuapp.com/api/doctors/< ID >`
+
+Returns status **200** and a JSON object of the doctor with specified ID
+
+```
+  {
+    "id": 1,
+    "name": "Dr Test Office MD",
+    "email": "drtest@test.com",
+    "password": "test"              // This will be hashed in future versions
+  }
+```
+Returns status **404** if server could not find record with specified ID.
 
 **POST** on `https://bw4-immunization.herokuapp.com/api/doctors`
 
@@ -227,6 +271,22 @@ Returns status **200** with an array of all the immunizations in the immunizatio
   }
 ]
 ```
+
+**GET** on `https://bw4-immunization.herokuapp.com/api/immunizations/< ID >`
+
+Returns status **200** and a JSON object of the immunization with specified ID
+
+```
+  {
+    "id": 1,
+    "child_id": 1,
+    "doctor_id": 1,
+    "name": "Measels Vaccine",
+    "date_administered": "2019-09-19T21:01:23.369Z",
+    "location": "Right arm"
+  }
+```
+Returns status **404** if server could not find record with specified ID.
 
 **POST** on `https://bw4-immunization.herokuapp.com/api/immunizations`
 
