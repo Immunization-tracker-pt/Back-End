@@ -12,7 +12,9 @@
 - Knex
 
 ## Data Structures
-**Preliminary as of 9/18/2019**
+**Preliminary as of 9/20/2019**
+
+**None of this is set in stone. All of it is subjec to change based on the needs of the team**
 
 ```
 // PARENTS
@@ -61,11 +63,11 @@
 
 ## End Points
 
-### Parents Data
+### Parents Table
 
 **GET** on `/api/parents`
 
-Returns status 200 and a JSON array of all the parent accounts on the parents table.
+Returns status **200** and a JSON array of all the parent accounts on the parents table.
 
 ```
 [
@@ -82,28 +84,29 @@ Returns status 200 and a JSON array of all the parent accounts on the parents ta
 
 Database expects a JSON object of the new parent account:
 
+**EXAMPLE:**
 ```
 {
 	"name": "New Parents",      // Required
 	"email": "test1@test.com", // Required. Must be unique
-	"password": "test"          // Required
+	"password": "test"          // Required. This will be hashed in future versions
 }
 
 ```
 
-Returns status 201 with a JSON object of the newly created parent account in the parents table.
+Returns status **201** with a JSON object of the newly created parent account in the parents table.
 
 ```
 {
   "id": 2,
   "name": "New Parents",
   "email": "test1@test.com",
-  "password": "test"
+  "password": "test"      
 }
 
 ```
 
-Returns status 500 if a required field is missing or email is not unique
+Returns status **500** if a required field is missing or email is not unique
 
 ```
 {
@@ -115,11 +118,11 @@ Returns status 500 if a required field is missing or email is not unique
 }
 ```
 
-### Children Data
+### Children Table
 
 **GET** on `/api/children`
 
-Returns status *200* with an array of all the children in the children table.
+Returns status **200** with an array of all the children in the children table.
 
 ```
 [
@@ -131,4 +134,143 @@ Returns status *200* with an array of all the children in the children table.
 ]
 ```
 
+**POST** on `/api/children`
+
+Server expects a JSON object of the new child
+
+**EXAMPLE:**
+```
+{
+	"parent_id": 1,           // Required - ID of the child's parent.
+	"fullname": "New Child"   // Required
+}
+```
+
+Returns status **201** and a JSON object of the new child record
+
+```
+{
+  "id": 2,
+  "parent_id": 1,
+  "fullname": "New Child"
+}
+```
+
+Returns status **500** if a required field is missing
+
+### Doctors Table
+
+**GET** on `/api/doctors`
+
+Returns status **200** with an array of all the doctors in the doctors table.
+
+```
+[
+  {
+    "id": 1,
+    "name": "Dr Test Office MD",
+    "email": "drtest@test.com",
+    "password": "test"              // This will be hashed in future versions
+  }
+]
+```
+
+**POST** on `/api/doctors`
+
+Server expects a JSON object of the new doctor
+
+**EXAMPLE:**
+```
+{
+	"name": "New Doctor",
+	"email": "test2@test.com",
+	"password": "test"
+}
+```
+
+Returns status **201** and a JSON object of the new doctor record
+
+```
+{
+  "id": 2,
+  "name": "New Doctor",
+  "email": "test2@test.com",
+  "password": "test"
+}
+```
+
+Returns status **500** if a required field is missing
+
+
+
+### Immunization Table
+
+**GET** on `/api/immunizations`
+
+Returns status **200** with an array of all the immunizations in the immunizations table.
+
+```
+[
+  {
+    "id": 1,
+    "child_id": 1,
+    "doctor_id": 1,
+    "name": "Measels Vaccine",
+    "date_administered": "2019-09-19T21:01:23.369Z",
+    "location": "Right arm"
+  }
+]
+```
+
+**POST** on `/api/immunizations`
+
+Server expects a JSON object of the new immunization
+
+**EXAMPLE:**
+```
+{
+    "child_id": 1,              // Required. ID of the child the immunization was administered TO
+    "doctor_id": 1,             // Required. ID of the doctor the immunization was administered BY
+    "name": "Polio Vaccine",    // Required. Name of the immunization
+    "date_administered": "2019-09-19T21:01:23.369Z",      // Required
+    "location": "Left arm"                                // Required
+}
+```
+
+Returns status **201** and a JSON object of the new immunization record
+
+```
+{
+  "id": 2,
+  "child_id": 1,
+  "doctor_id": 1,
+  "name": "Polio Vaccine",
+  "date_administered": "2019-09-19T21:01:23.369Z",
+  "location": "Left arm"
+}
+```
+
+Returns status **500** if a required field is missing
+
+
+### Parent Doctor Detail Table
+**END POINTS ARE NOT IMPLEMENTED FOR THIS TABLE YET**
+
+This table holds the data which links doctors to parents, and the data relevant between them (such as if the parents have granted access to the doctor to add/edit immunization records)
+```
+{
+    "id": 1,
+    "doctor_id": 1,                 // Required.  ID for the doctor of the parent
+    "parent_id": 1,                 // Required.  ID for the parent  
+    "permission_requested": 1,      // Boolean. 1 = true, 0 = false, 0 is default. 
+    "permission_granted": 1         // Boolean. 1 = true, 0 = false, 0 is default.  
+}
+```
+
+#### Doctor / Parent permissions - Preliminary
+
+
+**permission_requested:**  Has the doctor requested permission to add/edit records? Boolean. 1 = true, 0 = false, 0 is default.
+
+**permission_granted:** Have the parents granted permission to add/edit records? Boolean. 1 = true, 0 = false, 0 is default.
 
