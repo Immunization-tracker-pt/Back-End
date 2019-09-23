@@ -18,9 +18,9 @@
 Scroll down to End Points section for end points.
 
 ## Data Structures
-**Preliminary as of 9/20/2019**
+**as of 9/22/2019**
 
-**None of this is set in stone. All of it is subjec to change based on the needs of the team**
+**None of this is set in stone. All of it is subject to change based on the needs of the team**
 
 ```
 // PARENTS
@@ -43,9 +43,13 @@ Scroll down to End Points section for end points.
 
 // CHILDREN
   {
-    "id": 1,
+    "id": 2,
     "parent_id": 1,
-    "fullname": "Bobby Smith"
+    "firstname": "Bobby",
+    "middlename": "Allen",
+    "lastname": "Smith",
+    "dob": "2019-05-19T21:01:23.369Z",
+    "gender": "male"
   }
 
 // IMMUNIZATIONS
@@ -60,9 +64,10 @@ Scroll down to End Points section for end points.
 
 // DOCTORS
   {
-    "id": 1,
-    "name": "Dr Test Office MD",
-    "email": "drtest@test.com",
+    "id": 2,
+    "name": "Test Doctors Office",
+    "username": "testdoctor",
+    "email": "doctortest@test.com",
     "password": "test"
   }
 
