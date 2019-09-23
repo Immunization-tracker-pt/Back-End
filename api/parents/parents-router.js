@@ -1,9 +1,13 @@
 const router = require('express').Router()
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
+const restricted = require('../../auth/auth-middleware.js')
 
 const Parents = require('./parents-model.js')
 
 
-router.get('/', (req, res) => {
+router.get('/', restricted, (req, res) => {
     Parents.find()
         .then(parents => {
             res.status(200).json(parents)
@@ -49,6 +53,68 @@ router.post('/', (req, res) => {
             })
         })
 })
+
+router.post('/register', (req, res) => {
+    let parent = req.body
+    const hash = bcrypt.hashSync(parent.password, 4)
+    parent.password = hash
+
+    Parents.add(parent)
+        .then(savedParent => {
+            const token = generateToken(savedParent)
+            res.status(201).json({
+                parent: savedParent,
+                token
+            })
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Could not register new parent.',
+                dbError: error
+            })
+        })
+    
+})
+
+router.post('/login', (req, res) => {
+    let { username, password } = req.body
+
+    Parents.findBy({ username })
+        .first()
+        .then(parent => {
+            if(parent && bcrypt.compareSync(password, parent.password)) {
+                const token = generateToken(parent)
+                res.status(200).json({
+                    message: `Logged in as ${parent.username}`,
+                    token
+                })
+            } else {
+                res.status(401).json({
+                    message: 'Invalid credentials'
+                })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'There was an error with the authentication server.',
+                dbError: error
+            })
+        })
+})
+
+
+function generateToken(user) {
+    const payload = {
+        sub: user.id,
+        username: user.username,
+    }
+
+    const options = {
+        expiresIn: '1h'
+    }
+
+    return jwt.sign(payload, process.env.JWT_SECRET, options)
+}
 
 
 module.exports = router

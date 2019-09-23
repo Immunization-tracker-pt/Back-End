@@ -6,6 +6,9 @@ const helmet = require('helmet')
 const cors = require('cors')
 
 // ROUTES
+
+const testRouter = require('./test-routes/test-router.js')
+
 const childrenRouter = require('./children/children-router.js')
 const parentsRouter = require('./parents/parents-router.js')
 const doctorsRouter = require('./doctors/doctors-router.js')
@@ -18,6 +21,9 @@ server.use(express.json())
 server.use(cors())
 
 // ROUTES
+
+server.use('/api/test', testRouter)
+
 server.use('/api/children', childrenRouter)
 server.use('/api/parents', parentsRouter)
 server.use('/api/doctors', doctorsRouter)
