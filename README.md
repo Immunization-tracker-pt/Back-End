@@ -26,9 +26,19 @@ Scroll down to End Points section for end points.
 // PARENTS
   {
     "id": 1,
-    "name": "Smith Family",
+    "username": "testfamily",
     "email": "test@test.com",
-    "password": "test"
+    "password": "test",
+    "firstname": "Jack",
+    "middlename": "Alex",
+    "lastname": "Smith",
+    "dob": "1980-09-19T21:01:23.369Z",
+    "gender": "male",
+    "street": "125 Address Way",
+    "street2": null,
+    "city": "A Big City",
+    "state_province": "California",
+    "phonenumber": "555-555-1234"
   }
 
 // CHILDREN
@@ -78,11 +88,21 @@ Returns status **200** and a JSON array of all the parent accounts on the parent
 ```
 [
     {
-        "id": 1,
-        "name": "Smith Family",
-        "email": "test@test.com",
-        "password": "test"
-    }
+    "id": 1,
+    "username": "testfamily",
+    "email": "test@test.com",
+    "password": "test",
+    "firstname": "Jack",
+    "middlename": "Alex",
+    "lastname": "Smith",
+    "dob": "1980-09-19T21:01:23.369Z",
+    "gender": "male",
+    "street": "125 Address Way",
+    "street2": null,
+    "city": "A Big City",
+    "state_province": "California",
+    "phonenumber": "555-555-1234"
+  }
 ]
 ```
 
@@ -93,11 +113,21 @@ Returns status **200** and a JSON object of the parent account with specified ID
 ```
 [
     {
-        "id": 1,
-        "name": "Smith Family",
-        "email": "test@test.com",
-        "password": "test"
-    }
+    "id": 1,
+    "username": "testfamily",
+    "email": "test@test.com",
+    "password": "test",
+    "firstname": "Jack",
+    "middlename": "Alex",
+    "lastname": "Smith",
+    "dob": "1980-09-19T21:01:23.369Z",
+    "gender": "male",
+    "street": "125 Address Way",
+    "street2": null,
+    "city": "A Big City",
+    "state_province": "California",
+    "phonenumber": "555-555-1234"
+  }
 ]
 ```
 
@@ -110,9 +140,19 @@ Database expects a JSON object of the new parent account:
 **EXAMPLE:**
 ```
 {
-	"name": "New Parents",      // Required
-	"email": "test1@test.com",  // Required. Must be unique
-	"password": "test"          // Required. This will be hashed in future versions
+	"username": "NewFamily",
+	"email": "newfamily@email.com",
+	"password": "test",
+
+	"firstname": "Jane",
+	"middlename": "Marie",
+	"lastname": "Johnson",
+	"gender": "female",
+	"dob": "1986-09-19T21:01:23.369Z",
+	"street": "987 New Address Way",
+	"city": "San Jose",
+	"state_province": "California",
+	"phonenumber": "555-555-1234"
 }
 
 ```
@@ -121,11 +161,21 @@ Returns status **201** with a JSON object of the newly created parent account in
 
 ```
 {
-  "id": 2,
-  "name": "New Parents",
-  "email": "test1@test.com",
-  "password": "test"      
-}
+    "id": 2,
+    "username": "NewFamily",
+    "email": "newfamily@email.com",
+    "password": "$2a$04$8NaRNxiI0kES9n2WXaq77OWchAvZ53KbZnALw6B6YF1ZjWMezQQ2W",
+    "firstname": "Jane",
+    "middlename": "Marie",
+    "lastname": "Johnson",
+    "dob": "1986-09-19T21:01:23.369Z",
+    "gender": "female",
+    "street": "987 New Address Way",
+    "street2": null,
+    "city": "San Jose",
+    "state_province": "California",
+    "phonenumber": "555-555-1234"
+  }
 
 ```
 
@@ -150,9 +200,13 @@ Returns status **200** with an array of all the children in the children table.
 ```
 [
   {
-    "id": 1,
+    "id": 2,
     "parent_id": 1,
-    "fullname": "Bobby Smith"
+    "firstname": "Bobby",
+    "middlename": "Allen",
+    "lastname": "Smith",
+    "dob": "2019-05-19T21:01:23.369Z",
+    "gender": "male"
   }
 ]
 ```
@@ -163,9 +217,13 @@ Returns status **200** and a JSON object of the child with specified ID
 
 ```
   {
-    "id": 1,
+    "id": 2,
     "parent_id": 1,
-    "fullname": "Bobby Smith"
+    "firstname": "Bobby",
+    "middlename": "Allen",
+    "lastname": "Smith",
+    "dob": "2019-05-19T21:01:23.369Z",
+    "gender": "male"
   }
 ```
 Returns status **404** if server could not find record with specified ID.
@@ -177,18 +235,26 @@ Server expects a JSON object of the new child
 **EXAMPLE:**
 ```
 {
-	"parent_id": 1,           // Required - ID of the child's parent.
-	"fullname": "New Child"   // Required
-}
+    "parent_id": 1,
+    "firstname": "Sally",
+    "middlename": "Sue",
+    "lastname": "Smith",
+    "dob": "2017-05-19T21:01:23.369Z",
+    "gender": "female"
+  }
 ```
 
 Returns status **201** and a JSON object of the new child record
 
 ```
 {
-  "id": 2,
+  "id": 3,
   "parent_id": 1,
-  "fullname": "New Child"
+  "firstname": "Sally",
+  "middlename": "Sue",
+  "lastname": "Smith",
+  "dob": "2017-05-19T21:01:23.369Z",
+  "gender": "female"
 }
 ```
 
@@ -203,10 +269,11 @@ Returns status **200** with an array of all the doctors in the doctors table.
 ```
 [
   {
-    "id": 1,
-    "name": "Dr Test Office MD",
-    "email": "drtest@test.com",
-    "password": "test"              // This will be hashed in future versions
+    "id": 2,
+    "name": "Test Doctors Office",
+    "username": "testdoctor",
+    "email": "doctortest@test.com",
+    "password": "test"
   }
 ]
 ```
@@ -232,9 +299,10 @@ Server expects a JSON object of the new doctor
 **EXAMPLE:**
 ```
 {
-	"name": "New Doctor",
-	"email": "test2@test.com",
-	"password": "test"
+    "name": "New Doctors Office",
+    "username": "newdoctor",
+    "email": "newdoctortest@test.com",
+    "password": "test"
 }
 ```
 
@@ -242,9 +310,10 @@ Returns status **201** and a JSON object of the new doctor record
 
 ```
 {
-  "id": 2,
-  "name": "New Doctor",
-  "email": "test2@test.com",
+  "id": 3,
+  "name": "New Doctors Office",
+  "username": "newdoctor",
+  "email": "newdoctortest@test.com",
   "password": "test"
 }
 ```
