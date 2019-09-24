@@ -89,10 +89,8 @@ In future versions of this API, logging in will send back the parent's account d
 **Expected JSON object EXAMPLE**
 ```
 {
-    "name": "New Doctors Office",           // Required.
-    "username": "newdoctor1",               // Not required. Perhaps depreciated             
-    "email": "newdoctortest1@test.com",     // Required.
-    "password": "test"                      // Required
+    "email": "example@example.com",
+    "password": "test"
 }
 ```
 Returns status **201** with a JSON object of the new doctor
