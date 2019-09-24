@@ -1,4 +1,6 @@
 const router = require('express').Router()
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const Doctors = require('./doctors-model')
 
@@ -49,5 +51,68 @@ router.post('/', (req, res) => {
             })
         })
 })
+
+router.post('/register', (req, res) => {
+    let doctor = req.body
+    const hash = bcrypt.hashSync(doctor.password, 4)
+    doctor.password = hash
+
+    Doctors.add(doctor)
+        .then(savedDoctor => {
+            const token = generateToken(savedDoctor)
+            res.status(201).json({
+                doctor: savedDoctor,
+                token
+            })
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'Could not register new doctor.',
+                dbError: error
+            })
+        })
+    
+})
+
+router.post('/login', (req, res) => {
+    let { email, password } = req.body
+
+    Doctors.findBy({ email })
+        .first()
+        .then(doctor => {
+            if(doctor && bcrypt.compareSync(password, doctor.password)) {
+                const token = generateToken(doctor)
+                res.status(200).json({
+                    message: `Logged in as ${doctor.email}`,
+                    token
+                })
+            } else {
+                res.status(401).json({
+                    message: 'Invalid credentials'
+                })
+            }
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: 'There was an error with the authentication server.',
+                dbError: error
+            })
+        })
+})
+
+
+function generateToken(user) {
+    const payload = {
+        sub: user.id,
+        username: user.email,
+        type: 'doctor'
+    }
+
+    const options = {
+        expiresIn: '1d'
+    }
+
+    return jwt.sign(payload, process.env.JWT_SECRET, options)
+}
 
 module.exports = router

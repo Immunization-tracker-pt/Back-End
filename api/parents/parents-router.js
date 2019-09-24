@@ -7,7 +7,7 @@ const restricted = require('../../auth/auth-middleware.js')
 const Parents = require('./parents-model.js')
 
 
-router.get('/', restricted, (req, res) => {
+router.get('/', (req, res) => {
     Parents.find()
         .then(parents => {
             res.status(200).json(parents)
@@ -54,6 +54,41 @@ router.post('/', (req, res) => {
         })
 })
 
+router.get('/:id/doctors', async (req, res)  => {
+    const { id } = req.params
+
+    try {
+        const doctors = await Parents.getParentDoctorData(id)
+        res.status(200).json({
+            message: 'Hello', 
+            doctors: doctors
+        })
+
+    } catch (error) {
+        res.status(500).json({ 
+            message: `Could not get doctors related to parents with id: ${id}`,
+            dbError: error
+        })
+    }
+
+    
+})
+
+router.get('/:id/children', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const children = await Parents.getChildren(id)
+        res.status(200).json(children)
+
+    } catch (error) {
+        res.status(500).json({ 
+            message: `Could not get children related to parents with id: ${id}`,
+            dbError: error
+        })
+    }
+})
+
 router.post('/register', (req, res) => {
     let parent = req.body
     const hash = bcrypt.hashSync(parent.password, 4)
@@ -77,15 +112,15 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    let { username, password } = req.body
+    let { email, password } = req.body
 
-    Parents.findBy({ username })
+    Parents.findBy({ email })
         .first()
         .then(parent => {
             if(parent && bcrypt.compareSync(password, parent.password)) {
                 const token = generateToken(parent)
                 res.status(200).json({
-                    message: `Logged in as ${parent.username}`,
+                    message: `Logged in as ${parent.email}`,
                     token
                 })
             } else {
@@ -106,11 +141,12 @@ router.post('/login', (req, res) => {
 function generateToken(user) {
     const payload = {
         sub: user.id,
-        username: user.username,
+        username: user.email,
+        type: 'parent'
     }
 
     const options = {
-        expiresIn: '1h'
+        expiresIn: '1d'
     }
 
     return jwt.sign(payload, process.env.JWT_SECRET, options)
