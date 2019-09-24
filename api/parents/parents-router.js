@@ -111,30 +111,70 @@ router.post('/register', (req, res) => {
     
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     let { email, password } = req.body
 
-    Parents.findBy({ email })
-        .first()
-        .then(parent => {
-            if(parent && bcrypt.compareSync(password, parent.password)) {
-                const token = generateToken(parent)
-                res.status(200).json({
-                    message: `Logged in as ${parent.email}`,
-                    token
-                })
-            } else {
-                res.status(401).json({
-                    message: 'Invalid credentials'
-                })
-            }
-        })
-        .catch(error => {
+    try {
+        const parent = await Parents.findBy({email}).first()
+
+        if (parent && bcrypt.compareSync(password, parent.password)) {
+            const token = generateToken(parent)
+            const doctors = await Parents.getParentDoctorData(parent.id)
+            const children = await Parents.getChildren(parent.id)
+            const immunizations = await Parents.getChildImmunizationData(parent.id)
+            
+            res.status(200).json({
+                message: `Welcome ${parent.firstname}!`,
+                token,
+                parent,
+                children,
+                doctors,
+                immunizations
+            })
+            
+
+            
+        } else {
             res.status(500).json({
-                message: 'There was an error with the authentication server.',
+                message: "Error logging in",
                 dbError: error
             })
-        })
+        }
+
+        // const children = await Parents.getChildren(parent_id)
+        
+        // const immunizations = await Parents.getChildImmunizationData(parent_id)
+
+        
+   
+    } catch (error) {
+        res.status(401).json({
+            message: 'Invalid credentials',
+            error
+        }) 
+    }
+
+    // Parents.findBy({ email })
+    //     .first()
+    //     .then(parent => {
+    //         if(parent && bcrypt.compareSync(password, parent.password)) {
+    //             const token = generateToken(parent)
+    //             res.status(200).json({
+    //                 message: `Logged in as ${parent.email}`,
+    //                 token
+    //             })
+    //         } else {
+    //             res.status(401).json({
+    //                 message: 'Invalid credentials'
+    //             })
+    //         }
+    //     })
+    //     .catch(error => {
+    //         res.status(500).json({
+    //             message: 'There was an error with the authentication server.',
+    //             dbError: error
+    //         })
+    //     })
 })
 
 
