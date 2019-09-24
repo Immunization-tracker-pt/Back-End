@@ -5,7 +5,7 @@ exports.seed = function(knex) {
     .then(function () {
       // Inserts seed entries
       return knex('immunizations').insert([
-        {child_id: 1, doctor_id: 1, name: 'Measels Vaccine', date_administered: '2019-09-19T21:01:23.369Z', location: 'Right arm' },
+        {child_id: 2, doctor_id: 2, parent_id: 1, name: 'Measels Vaccine', date_administered: '2019-09-19T21:01:23.369Z', location: 'Right arm' },
       ]);
     });
 };
