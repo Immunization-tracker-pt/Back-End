@@ -7,12 +7,8 @@ exports.seed = function(knex) {
       return knex('children').insert([
         {
           parent_id: 1,
-          firstname: 'Bobby',
-          middlename: 'Allen',
-          lastname: 'Smith',
-          gender: 'male',
+          fullname: 'Bobby Smith',
           dob: '2019-05-19T21:01:23.369Z',
-          
         },
       ]);
     });
