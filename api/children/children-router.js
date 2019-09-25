@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Children = require('./children-model.js')
+const Immunizations = require('../immunizations/immunizations-model.js')
 
 router.get('/', (req, res) => {
     Children.find()
@@ -46,6 +47,30 @@ router.post('/', (req, res) => {
                 dbError: error
             })
         })
+})
+
+// testing
+
+
+
+router.post('/:id/children/immunizations', async (req, res) => {
+    const children = req.body
+    const parent_id = req.params.id
+
+    try {
+        const savedChildren = await Children.addChildren(children, parent_id)
+        const immunizations = await Immunizations.findBy({parent_id})
+        res.status(200).json({
+            message: "yo",
+            children: savedChildren,
+            immunizations
+        })
+
+    } catch(error) {
+        res.status(500).json({error})
+
+    }
+
 })
 
 
