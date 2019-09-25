@@ -30,7 +30,6 @@ exports.up = function(knex) {
     .createTable('doctors', doctors => {
         doctors.increments()
         doctors.string('name', 255).notNullable()
-        doctors.string('username').notNullable().unique()
         doctors.string('email').notNullable().unique()
         doctors.string('password', 128).notNullable()
     })
@@ -45,7 +44,6 @@ exports.up = function(knex) {
             .onUpdate('CASCADE')
         immunizations.integer('doctor_id')
             .unsigned()
-            .notNullable()
             .references('id')
             .inTable('doctors')
             .onDelete('CASCADE')
@@ -58,8 +56,8 @@ exports.up = function(knex) {
             .onDelete('CASCADE')
             .onUpdate('CASCADE')
         immunizations.string('name', 255).notNullable()
-        immunizations.string('date_administered', 255).notNullable()
-        immunizations.string('location', 255).notNullable()
+        immunizations.string('date_administered', 255)
+        immunizations.string('location', 255)
     })
     .createTable('parent_doctor_detail', pdd => {
         pdd.increments()

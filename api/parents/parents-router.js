@@ -111,30 +111,42 @@ router.post('/register', (req, res) => {
     
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     let { email, password } = req.body
 
-    Parents.findBy({ email })
-        .first()
-        .then(parent => {
-            if(parent && bcrypt.compareSync(password, parent.password)) {
-                const token = generateToken(parent)
-                res.status(200).json({
-                    message: `Logged in as ${parent.email}`,
-                    token
-                })
-            } else {
-                res.status(401).json({
-                    message: 'Invalid credentials'
-                })
-            }
-        })
-        .catch(error => {
+    try {
+        const parent = await Parents.findBy({email}).first()
+
+        if (parent && bcrypt.compareSync(password, parent.password)) {
+            const token = generateToken(parent)
+            const doctors = await Parents.getParentDoctorData(parent.id)
+            const children = await Parents.getChildren(parent.id)
+            const immunizations = await Parents.getChildImmunizationData(parent.id)
+            
+            res.status(200).json({
+                message: `Welcome ${parent.firstname}!`,
+                token,
+                parent,
+                children,
+                doctors,
+                immunizations
+            })
+            
+        } else {
             res.status(500).json({
-                message: 'There was an error with the authentication server.',
+                message: "Error logging in",
                 dbError: error
             })
-        })
+        }
+        
+   
+    } catch (error) {
+        res.status(401).json({
+            message: 'Invalid credentials',
+            error
+        }) 
+    }
+
 })
 
 
@@ -151,6 +163,30 @@ function generateToken(user) {
 
     return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
+
+// esting
+
+router.post('/new', async (req, res) => {
+    // Expects a parent object, with an array of children
+    const { parent, children } = req.body
+    try {
+        // Create parent and get ID back
+        // With new parent ID, create the children with the new parent's ID
+        const newFamily = await Parents.addParentWithChildren(parent, children)
+        console.log("NEWFAMWUT", newFamily)
+        res.status(201).json({
+            message: "Successful",
+            data: newFamily
+        })
+    }
+    catch (error) {
+        res.status(500).json({ message: "error", error})
+    }
+    
+    // For each child, create initial immunizations
+
+    // Return the new parent, an array of the paren'ts children, and an array of all the children's immunization records
+})
 
 
 module.exports = router
