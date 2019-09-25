@@ -305,13 +305,10 @@ Returns status **200** with an array of all the children in the children table.
 ```
 [
   {
-    "id": 2,
-    "parent_id": 1,
-    "firstname": "Bobby",
-    "middlename": "Allen",
-    "lastname": "Smith",
-    "dob": "2019-05-19T21:01:23.369Z",
-    "gender": "male"
+    "id": 1,
+    "parent_id": 2,
+    "fullname": "Bobby Smith",
+    "dob": "2019-05-19T21:01:23.369Z"
   }
 ]
 ```
@@ -438,7 +435,8 @@ Returns status **200** with an array of all the immunizations in the immunizatio
   {
     "id": 1,
     "child_id": 1,
-    "doctor_id": 1,
+    "doctor_id": 2,
+    "parent_id": 2,
     "name": "Measels Vaccine",
     "date_administered": "2019-09-19T21:01:23.369Z",
     "location": "Right arm"
@@ -454,7 +452,8 @@ Returns status **200** and a JSON object of the immunization with specified ID
   {
     "id": 1,
     "child_id": 1,
-    "doctor_id": 1,
+    "doctor_id": 2,
+    "parent_id": 2,
     "name": "Measels Vaccine",
     "date_administered": "2019-09-19T21:01:23.369Z",
     "location": "Right arm"
@@ -468,26 +467,28 @@ Server expects a JSON object of the new immunization
 
 **EXAMPLE:**
 ```
-{
-    "child_id": 1,              // Required. ID of the child the immunization was administered TO
-    "doctor_id": 1,             // Required. ID of the doctor the immunization was administered BY
-    "name": "Polio Vaccine",    // Required. Name of the immunization
-    "date_administered": "2019-09-19T21:01:23.369Z",      // Required
-    "location": "Left arm"                                // Required
-}
+  {
+    "child_id": 1,
+    "doctor_id": 2,
+    "parent_id": 2,
+    "name": "Measels Vaccine",
+    "date_administered": "2019-09-19T21:01:23.369Z",
+    "location": "Right arm"
+  }
 ```
 
 Returns status **201** and a JSON object of the new immunization record
 
 ```
 {
-  "id": 2,
-  "child_id": 1,
-  "doctor_id": 1,
-  "name": "Polio Vaccine",
-  "date_administered": "2019-09-19T21:01:23.369Z",
-  "location": "Left arm"
-}
+    "id": 1,
+    "child_id": 1,
+    "doctor_id": 2,
+    "parent_id": 2,
+    "name": "Measels Vaccine",
+    "date_administered": "2019-09-19T21:01:23.369Z",
+    "location": "Right arm"
+  }
 ```
 
 Returns status **500** if a required field is missing

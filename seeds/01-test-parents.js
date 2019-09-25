@@ -6,17 +6,18 @@ exports.seed = function(knex) {
       // Inserts seed entries
       return knex('parents').insert([
         {
-          email: 'test@test.com',
-          password: 'test',
+          email: 'newfamily2@email.com',
+          password: '$2a$04$SYYxMrfTdhcXse/yy1s4WugDgBkCgItj.SJ.NudU0TzsOK.WMPUyu',
           firstname: 'Jack',
           lastname: 'Smith',
           dob: '1980-09-19T21:01:23.369Z',
           street: '125 Address Way',
           city: 'A Big City',
           state_province: 'California',
-          phonenumber: '555-555-1234'
-
-        }
+          phonenumber: '555-555-1234',
+          permission_granted: 0,
+        },
       ]);
     });
 };
+
