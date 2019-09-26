@@ -10,7 +10,8 @@ module.exports = {
     getImmunizationsByChildId,
     getImmunizationsByParentId,
     requestPermission,
-    revokePermissionRequest
+    revokePermissionRequest,
+    getAllParentDoctorDetails
 }
 
 function find() {
@@ -70,4 +71,8 @@ function getImmunizationsByParentId(parent_id) {
 
 function getImmunizationsByChildId(child_id) {
     return db('immunizations').where({child_id})
+}
+
+function getAllParentDoctorDetails() {
+    return db('parent_doctor_detail')
 }

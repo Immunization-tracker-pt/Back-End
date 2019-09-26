@@ -159,6 +159,16 @@ router.put('/revoke-request-permission/:doctor_id/:parent_id/', async (req, res)
     }
 })
 
+router.get('/get/ppd', (req, res) => {
+    Doctors.getAllParentDoctorDetails()
+        .then(ppds => {
+            res.status(200).json(ppds)
+        })
+        .catch(error => {
+            res.status(500).json(error)
+        })
+})
+
 // --------------------FIX THIS
 // router.get('/immunizations/parent/:id', async (req, res) => {
 //     const { id } = req.params
