@@ -37,7 +37,6 @@ async function addParentWithChildren(parent, children) {
         const newParentId = await db('parents').insert(parent)
         const newId = newParentId[0]
         const family = await Children.addChildren(children, newId)
-        console.log("NEW FAMILY", family)
         return family
     } catch (error) {
 
@@ -65,3 +64,4 @@ function getChildImmunizationData(parent_id) {
         .select('*')
         .where('i.parent_id', parent_id)
 }
+

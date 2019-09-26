@@ -65,11 +65,9 @@ function addInitialImmunizations(parent_id, child_id) {
         })
 
     })
-    // console.log("CHECK THIS", init_immunizations)
 
     return db('immunizations').insert(init_immunizations)
         .then(data => {
-            // console.log("does this happen", data)
             // getChildrenImmunizationsByChildId(child_id)
             
         })

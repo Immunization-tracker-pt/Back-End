@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const Doctors = require('./doctors-model')
+const Parents = require('../parents/parents-model.js')
 
 
 router.get('/', (req, res) => {
@@ -100,6 +101,78 @@ router.post('/login', (req, res) => {
         })
 })
 
+
+
+router.get('/parent/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const parents = await Doctors.getParentsWithDoctorId(id)
+        if(parents.length < 1) {
+            res.status(404).json({ message: `Could not find parents related to doctor_id: ${id}`})
+        }
+        res.status(200).json(parents)
+
+    } catch (error) {
+        res.status(500).json({ message: `Error getting parent doctor data with ID: ${id}`})
+    }
+
+})
+
+router.get('/immunizations/doctor/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const immunizations = await Doctors.getImmunizationsByDoctorId(id)
+        if(immunizations.length < 1) {
+            res.status(404).json({
+                message: `Could not find immunizations with doctor id: ${id}`
+            })
+        }
+        res.status(200).json(immunizations)
+    } catch(error) {
+        res.status(500).json({ message: `Could not get immunizations for doctor id: ${id}`})
+    }
+})
+
+router.put('/request-permission/:doctor_id/:parent_id/', async (req, res) => {
+    const { doctor_id, parent_id } = req.params
+    try {
+        const request = await Doctors.requestPermission(parent_id, doctor_id)
+        res.status(200).json({
+            message: `Requested permission to edit account for parent ${parent_id}`,
+            updatedParentDoctorDetail: request
+        })
+    } catch (error) {
+        res.status(500).json({ message: `There was an error with the server requesting permission to edit parent ${parent_id}`, error})
+    }
+})
+
+router.put('/revoke-request-permission/:doctor_id/:parent_id/', async (req, res) => {
+    const { doctor_id, parent_id } = req.params
+    try {
+        const request = await Doctors.revokePermissionRequest(parent_id, doctor_id)
+        res.status(200).json({
+            message: `Revoking request to edit parent: ${parent_id}`,
+            updatedParentDoctorDetail: request
+        })
+    } catch (error) {
+        res.status(500).json({ message: `There was an error with the server revoking request to edit parent ${parent_id}`, error})
+    }
+})
+
+// --------------------FIX THIS
+// router.get('/immunizations/parent/:id', async (req, res) => {
+//     const { id } = req.params
+//     try {
+//         const immunizations = await Doctors.getImmunizationsByParentId(id)
+//         if(immunizations.length < 1) {
+//             res.status(404).json({
+//                 message: `Could not find immunizations with parent id: ${id}`
+//             })
+//         }
+//     } catch(error) {
+//         res.status(500).json({ message: `Could not get immunizations for parent id: ${id}`})
+//     }
+// })
 
 function generateToken(user) {
     const payload = {
