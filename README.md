@@ -482,7 +482,9 @@ Returns status **500** if a required field is missing
 - Must enter doctor ID and parent ID into URL as paramaters, see below for example.
 
 PUT `https://bw4-immunization.herokuapp.com/api/doctors/request-permission/<doctor_id>/<parent_id>`
+
 **EXAMPLE:** PUT `https://bw4-immunization.herokuapp.com/api/doctors/request-permission/1/1`
+
 **EXAMPLE RESPONSE:**
 ```
 {
@@ -500,11 +502,14 @@ PUT `https://bw4-immunization.herokuapp.com/api/doctors/request-permission/<doct
 ```
 
 **Doctor to REVOKE request permission to edit a parent account**
+
 - Doctor request to permission to edit a Parent account.
 - Must enter doctor ID and parent ID into URL as paramaters, see below for example.
 
 PUT `https://bw4-immunization.herokuapp.com/api/doctors/revoke-request-permission/<doctor_id>/<parent_id>`
+
 **EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/revoke-request-permission/1/1`
+
 **EXAMPLE RESPONSE:** 
 ```
 {
@@ -522,8 +527,11 @@ PUT `https://bw4-immunization.herokuapp.com/api/doctors/revoke-request-permissio
 ```
 
 **Get all parent records with doctor**
+
 GET `https://bw4-immunization.herokuapp.com/api/doctors/parent/<doctor_id>`
+
 **EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/parent/1`
+
 **EXAMPLE RESPONSE:** Returns an ARRAY of all parents related to the given doctor_id
 ```
 [
@@ -545,8 +553,11 @@ GET `https://bw4-immunization.herokuapp.com/api/doctors/parent/<doctor_id>`
 ```
 
 **Get all Immunization records with doctor ID**
+
 GET `https://bw4-immunization.herokuapp.com/api/doctors/immunizations/doctor/<doctor_id>`
+
 **EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/immunizations/doctor/1`
+
 **EXAMPLE RESPONSE:** Returns an ARRAY of all Immunizations related to the given doctor_id
 ```
 [
