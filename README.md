@@ -192,21 +192,17 @@ Returns status **200** and a JSON array of all the parent accounts on the parent
 
 ```
 [
-    {
-    "id": 1,
-    "username": "testfamily",
-    "email": "test@test.com",
-    "password": "test",
-    "firstname": "Jack",
-    "middlename": "Alex",
-    "lastname": "Smith",
-    "dob": "1980-09-19T21:01:23.369Z",
-    "gender": "male",
-    "street": "125 Address Way",
-    "street2": null,
-    "city": "A Big City",
-    "state_province": "California",
-    "phonenumber": "555-555-1234"
+  {
+      "email": "balabb@email.com",
+      "password": "test",
+      "firstname": "Bob",
+      "lastname": "Johnson",
+      "dob": "1986-09-19T21:01:23.369Z",
+      "street": "987 New Address Way",
+      "city": "San Jose",
+      "state_province": "California",
+      "phonenumber": "555-555-1234",
+      "permission_granted": 1
   }
 ]
 ```
@@ -217,21 +213,18 @@ Returns status **200** and a JSON object of the parent account with specified ID
 
 ```
 [
-    {
-    "id": 1,
-    "username": "testfamily",
-    "email": "test@test.com",
+  {
+    "id": 1
+    "email": "balabb@email.com",
     "password": "test",
-    "firstname": "Jack",
-    "middlename": "Alex",
-    "lastname": "Smith",
-    "dob": "1980-09-19T21:01:23.369Z",
-    "gender": "male",
-    "street": "125 Address Way",
-    "street2": null,
-    "city": "A Big City",
+    "firstname": "Bob",
+    "lastname": "Johnson",
+    "dob": "1986-09-19T21:01:23.369Z",
+    "street": "987 New Address Way",
+    "city": "San Jose",
     "state_province": "California",
-    "phonenumber": "555-555-1234"
+    "phonenumber": "555-555-1234",
+    "permission_granted": 1
   }
 ]
 ```
@@ -245,19 +238,16 @@ Database expects a JSON object of the new parent account:
 **EXAMPLE:**
 ```
 {
-	"username": "NewFamily",
-	"email": "newfamily@email.com",
+	"email": "balabb@email.com",
 	"password": "test",
-
-	"firstname": "Jane",
-	"middlename": "Marie",
+	"firstname": "Bob",
 	"lastname": "Johnson",
-	"gender": "female",
 	"dob": "1986-09-19T21:01:23.369Z",
 	"street": "987 New Address Way",
 	"city": "San Jose",
 	"state_province": "California",
-	"phonenumber": "555-555-1234"
+	"phonenumber": "555-555-1234",
+	"permission_granted": 1
 }
 
 ```
@@ -266,21 +256,19 @@ Returns status **201** with a JSON object of the newly created parent account in
 
 ```
 {
-    "id": 2,
-    "username": "NewFamily",
-    "email": "newfamily@email.com",
-    "password": "$2a$04$8NaRNxiI0kES9n2WXaq77OWchAvZ53KbZnALw6B6YF1ZjWMezQQ2W",
-    "firstname": "Jane",
-    "middlename": "Marie",
-    "lastname": "Johnson",
-    "dob": "1986-09-19T21:01:23.369Z",
-    "gender": "female",
-    "street": "987 New Address Way",
+    "id": 1,
+    "email": "newfamily2@email.com",
+    "password": "$2a$04$SYYxMrfTdhcXse/yy1s4WugDgBkCgItj.SJ.NudU0TzsOK.WMPUyu",
+    "firstname": "Jack",
+    "lastname": "Smith",
+    "dob": "1980-09-19T21:01:23.369Z",
+    "street": "125 Address Way",
     "street2": null,
-    "city": "San Jose",
+    "city": "A Big City",
     "state_province": "California",
-    "phonenumber": "555-555-1234"
-  }
+    "phonenumber": "555-555-1234",
+    "permission_granted": 0
+}
 
 ```
 
@@ -319,13 +307,10 @@ Returns status **200** and a JSON object of the child with specified ID
 
 ```
   {
-    "id": 2,
+    "id": 1,
     "parent_id": 1,
-    "firstname": "Bobby",
-    "middlename": "Allen",
-    "lastname": "Smith",
-    "dob": "2019-05-19T21:01:23.369Z",
-    "gender": "male"
+    "fullname": "Bobby Smith",
+    "dob": "2019-05-19T21:01:23.369Z"
   }
 ```
 Returns status **404** if server could not find record with specified ID.
@@ -338,25 +323,19 @@ Server expects a JSON object of the new child
 ```
 {
     "parent_id": 1,
-    "firstname": "Sally",
-    "middlename": "Sue",
-    "lastname": "Smith",
-    "dob": "2017-05-19T21:01:23.369Z",
-    "gender": "female"
-  }
+    "fullname": "Bobby Smith",
+    "dob": "2019-05-19T21:01:23.369Z"
+}
 ```
 
 Returns status **201** and a JSON object of the new child record
 
 ```
 {
-  "id": 3,
-  "parent_id": 1,
-  "firstname": "Sally",
-  "middlename": "Sue",
-  "lastname": "Smith",
-  "dob": "2017-05-19T21:01:23.369Z",
-  "gender": "female"
+    "id": 1,
+    "parent_id": 1,
+    "fullname": "Bobby Smith",
+    "dob": "2019-05-19T21:01:23.369Z"
 }
 ```
 
@@ -492,6 +471,96 @@ Returns status **201** and a JSON object of the new immunization record
 ```
 
 Returns status **500** if a required field is missing
+
+### Other End Points
+
+#### FOR DOCTORS
+
+**Doctor to request permission to edit a parent account**
+
+- Doctor request to permission to edit a Parent account.
+- Must enter doctor ID and parent ID into URL as paramaters, see below for example.
+
+PUT `https://bw4-immunization.herokuapp.com/api/doctors/request-permission/<doctor_id>/<parent_id>`
+**EXAMPLE:** PUT `https://bw4-immunization.herokuapp.com/api/doctors/request-permission/1/1`
+**EXAMPLE RESPONSE:**
+```
+{
+  "message": "Requested permission to edit account for parent 1",
+  "updatedParentDoctorDetail": [
+    {
+      "id": 3,
+      "doctor_id": 1,
+      "parent_id": 1,
+      "permission_requested": 1,
+      "permission_granted": 0
+    }
+  ]
+}
+```
+
+**Doctor to REVOKE request permission to edit a parent account**
+- Doctor request to permission to edit a Parent account.
+- Must enter doctor ID and parent ID into URL as paramaters, see below for example.
+
+PUT `https://bw4-immunization.herokuapp.com/api/doctors/revoke-request-permission/<doctor_id>/<parent_id>`
+**EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/revoke-request-permission/1/1`
+**EXAMPLE RESPONSE:** 
+```
+{
+  "message": "Revoking request to edit parent: 1",
+  "updatedParentDoctorDetail": [
+    {
+      "id": 3,
+      "doctor_id": 1,
+      "parent_id": 1,
+      "permission_requested": 0,
+      "permission_granted": 0
+    }
+  ]
+}
+```
+
+**Get all parent records with doctor**
+GET `https://bw4-immunization.herokuapp.com/api/doctors/parent/<doctor_id>`
+**EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/parent/1`
+**EXAMPLE RESPONSE:** Returns an ARRAY of all parents related to the given doctor_id
+```
+[
+  {
+    "parent_id": 1,
+    "firstname": "Jack",
+    "lastname": "Smith",
+    "email": "newfamily2@email.com",
+    "dob": "1980-09-19T21:01:23.369Z",
+    "street": "125 Address Way",
+    "city": "A Big City",
+    "state_province": "California",
+    "phonenumber": "555-555-1234",
+    "PARENT_permission_granted": 0,
+    "permission_granted": 0,
+    "permission_requested": 0
+  }
+]
+```
+
+**Get all Immunization records with doctor ID**
+GET `https://bw4-immunization.herokuapp.com/api/doctors/immunizations/doctor/<doctor_id>`
+**EXAMPLE:** `https://bw4-immunization.herokuapp.com/api/doctors/immunizations/doctor/1`
+**EXAMPLE RESPONSE:** Returns an ARRAY of all Immunizations related to the given doctor_id
+```
+[
+  {
+    "id": 1,
+    "child_id": 1,
+    "doctor_id": 1,
+    "parent_id": 1,
+    "name": "Measels",
+    "date_administered": "2019-09-19T21:01:23.369Z",
+    "location": "Right arm"
+  }
+]
+```
 
 
 ### Parent Doctor Detail Table
