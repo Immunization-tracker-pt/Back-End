@@ -4,6 +4,9 @@ module.exports = {
     find,
     findBy,
     findById,
+    findPDDById,
+    findPDDByDocId,
+    findPDDByParentId,
     add,
     getParentsWithDoctorId,
     getImmunizationsByDoctorId,
@@ -11,7 +14,8 @@ module.exports = {
     getImmunizationsByParentId,
     requestPermission,
     revokePermissionRequest,
-    getAllParentDoctorDetails
+    getAllParentDoctorDetails,
+    createDoctorParentRelationship
 }
 
 function find() {
@@ -61,6 +65,43 @@ function revokePermissionRequest(parent_id, doctor_id) {
             return db('parent_doctor_detail').where({parent_id, doctor_id})
         })
 }
+
+function findPDDById(id){
+    return db('parent_doctor_detail').where({id})
+}
+
+function findPDDByDocId(doctor_id) {
+    return db('parent_doctor_detail').where({doctor_id})
+}
+
+function findPDDByParentId(parent_id) {
+    return db('parent_doctor_detail').where({parent_id})
+}
+
+async function createDoctorParentRelationship(parent_id, doctor_id) {
+    // Check if there is an already existing parent doctot detail record
+    try{
+        const existingPDD = await db('parent_doctor_detail').where({parent_id, doctor_id})
+        
+        if (existingPDD.length < 1) {
+            const newPDD = await db('parent_doctor_detail')
+                .insert({
+                    doctor_id, 
+                    parent_id, 
+                    permission_requested: 0,
+                    permission_granted: 0
+                })
+            return newPDD // returns the id of the new record
+        } else {
+            return 0
+        }
+
+    } catch (error) {
+        
+    }
+    
+}
+
 function getImmunizationsByDoctorId(doctor_id) {
     return db('immunizations').where({doctor_id})
 }

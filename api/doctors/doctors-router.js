@@ -159,6 +159,8 @@ router.put('/revoke-request-permission/:doctor_id/:parent_id/', async (req, res)
     }
 })
 
+
+
 router.get('/get/ppd', (req, res) => {
     Doctors.getAllParentDoctorDetails()
         .then(ppds => {

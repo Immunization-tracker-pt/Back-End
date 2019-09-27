@@ -575,7 +575,6 @@ GET `https://bw4-immunization.herokuapp.com/api/doctors/immunizations/doctor/<do
 
 
 ### Parent Doctor Detail Table
-**END POINTS ARE NOT IMPLEMENTED FOR THIS TABLE YET**
 
 This table holds the data which links doctors to parents, and the data relevant between them (such as if the parents have granted access to the doctor to add/edit immunization records). Data in this table will likely be incorporated into the existing  `/api/parents`, `/api/doctors`, `/api/immunizations` end points.
 ```
@@ -588,10 +587,116 @@ This table holds the data which links doctors to parents, and the data relevant 
 }
 ```
 
-#### Doctor / Parent permissions - Preliminary
+##### Create a Parent and Doctor relationship which allows doctors to request permission to edit a parent's account. 
+
+**Expects the parent_id and doctor_id in the url paramaters.**
+
+POST `https://bw4-immunization.herokuapp.com/api/doctors/add-parent-relationship/:parent_id/:doctor_id`
+**DOES NOT NEED A REQUEST BODY**
+
+Returns status **200** and the ID of the new parent doctor relationship record
+
+Returns status **400** if a relationship already exists.
+
+#### Get all Parent Doctor Detail records
+
+Returns status **200** an array of all Parent Doctor Detail records
+
+GET `/pdd`
 
 
-**permission_requested:**  Has the doctor requested permission to add/edit records? Boolean. 1 = true, 0 = false, 0 is default.
+**EXAMPLE RESPONSE:**
 
-**permission_granted:** Have the parents granted permission to add/edit records? Boolean. 1 = true, 0 = false, 0 is default.
+```
+[
+  {
+    "id": 1,
+    "doctor_id": 2,
+    "parent_id": 1,
+    "permission_requested": 1,
+    "permission_granted": 1
+  },
+  {
+    "id": 4,
+    "doctor_id": 1,
+    "parent_id": 1,
+    "permission_requested": 0,
+    "permission_granted": 0
+  }
+]
+```
+
+#### Find Parent Doctor Detail by ID
+
+GET `/api/pdd/:id`
+
+Returns status **200**  an array with Parent Doctor Details by ID
+
+**EXAMPLE RESPONSE:**
+
+```
+[
+  {
+    "id": 1,
+    "doctor_id": 2,
+    "parent_id": 1,
+    "permission_requested": 1,
+    "permission_granted": 1
+]
+```
+
+#### Find Parent Doctor Detail by ParentID
+
+Returns status **200** and array with Parent Doctor Details by Parent ID
+
+GET `/api/pdd/parent/:parent_id`
+
+**EXAMPLE RESPONSE:**
+
+```
+[
+  {
+    "id": 1,
+    "doctor_id": 2,
+    "parent_id": 1,
+    "permission_requested": 1,
+    "permission_granted": 1
+  },
+  {
+    "id": 4,
+    "doctor_id": 1,
+    "parent_id": 1,
+    "permission_requested": 0,
+    "permission_granted": 0
+  }
+]
+```
+
+#### Find Parent Doctor Detail by DoctorID
+
+Returns status **200** an array of all the PDD's by Doctor ID
+
+GET `/api/pdd/doctor/:doctor_id`
+
+**EXAMPLE RESPONSE:**
+
+```
+[
+  {
+    "id": 1,
+    "doctor_id": 2,
+    "parent_id": 1,
+    "permission_requested": 1,
+    "permission_granted": 1
+  },
+  {
+    "id": 4,
+    "doctor_id": 1,
+    "parent_id": 1,
+    "permission_requested": 0,
+    "permission_granted": 0
+  }
+]
+```
+
 
