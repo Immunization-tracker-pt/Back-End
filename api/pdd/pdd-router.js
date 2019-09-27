@@ -4,19 +4,23 @@ const Doctors = require('../doctors/doctors-model.js')
 
 router.get('/', async (req, res) => {
     try {
-        const pdds = await Doctors.getAllParentDoctorDetails()
-        res.status(200).json(pdds)
-
-    } catch (error) {
-        res.status(500).json({ message: 'Error getting Parent Doctor Detail records from server'})
-    }
+            const pdds = await Doctors.getAllParentDoctorDetails()
+            res.status(200).json(pdds)
+        } catch (error) {
+            res.status(500).json({ message: 'Error getting Parent Doctor Detail records from server'})
+        }
 })
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params
     try {
         const pdd = await Doctors.findPDDById(id)
-        res.status(200).json(pdd)
+        if(pdd.length === 0) {
+            res.status(404).json({ message: `Could not find a Parent Doctor Detail with ID: ${id}`})
+        } else {
+            res.status(200).json(pdd)
+        }
+        
 
     } catch (error) {
         res.status(500).json({
@@ -29,11 +33,16 @@ router.get('/parent/:id', async (req, res) => {
     const { id } = req.params
     try {
         const pdd = await Doctors.findPDDByParentId(id)
-        res.status(200).json(pdd)
+        if(pdd.length === 0) {
+            res.status(404).json({ message: `Could not find a Parent Doctor Detail with parent ID: ${id}`})
+        } else {
+            res.status(200).json(pdd)
+        }
+        
 
     } catch (error) {
         res.status(500).json({
-            message: `Error getting Parent Doctor Detail record from server parent ID: ${id}`
+            message: `Error getting Parent Doctor Detail record from server ID: ${id}`
         })
     }
 })
@@ -42,11 +51,16 @@ router.get('/doctor/:id', async (req, res) => {
     const { id } = req.params
     try {
         const pdd = await Doctors.findPDDByDocId(id)
-        res.status(200).json(pdd)
+        if(pdd.length === 0) {
+            res.status(404).json({ message: `Could not find a Parent Doctor Detail with doctor ID: ${id}`})
+        } else {
+            res.status(200).json(pdd)
+        }
+        
 
     } catch (error) {
         res.status(500).json({
-            message: `Error getting Parent Doctor Detail record from server doctor ID: ${id}`
+            message: `Error getting Parent Doctor Detail record from server ID: ${id}`
         })
     }
 })
