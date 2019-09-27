@@ -472,9 +472,8 @@ Returns status **201** and a JSON object of the new immunization record
 
 Returns status **500** if a required field is missing
 
-### Other End Points
 
-#### FOR DOCTORS
+###Doctors Table
 
 **Doctor to request permission to edit a parent account**
 
