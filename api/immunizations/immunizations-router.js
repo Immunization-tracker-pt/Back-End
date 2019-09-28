@@ -36,6 +36,21 @@ router.get('/:id', (req, res) => {
         })
 })
 
+router.get('/child/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+      const immunizations = await Immunizations.findByChildId(id)
+      console.log('hi', immunizations)
+      if(immunizations.length === 0) {
+          res.status(404).json({ message: `No immunizations records found for child ${id}`})
+      } else {
+          res.status(200).json(immunizations)
+      }
+    } catch (error) {
+        res.status(500).json({ message: `Error getting child immunizations with child id ${id}` })
+    }
+})
+
 router.post('/', (req, res) => {
     const immunization = req.body
     Immunizations.add(immunization)
