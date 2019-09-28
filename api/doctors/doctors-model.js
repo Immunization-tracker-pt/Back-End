@@ -15,7 +15,8 @@ module.exports = {
     requestPermission,
     revokePermissionRequest,
     getAllParentDoctorDetails,
-    createDoctorParentRelationship
+    createDoctorParentRelationship,
+    deleteDoctorById,
 }
 
 function find() {
@@ -116,4 +117,8 @@ function getImmunizationsByChildId(child_id) {
 
 function getAllParentDoctorDetails() {
     return db('parent_doctor_detail')
+}
+
+function deleteDoctorById(id) {
+    return db('doctors').where({id}).del()
 }
