@@ -9,7 +9,8 @@ module.exports = {
     getChildren,
     getParentDoctorData,
     getChildImmunizationData,
-    addParentWithChildren
+    addParentWithChildren,
+    deleteParentById
 }
 
 function find() {
@@ -63,5 +64,9 @@ function getChildImmunizationData(parent_id) {
         .join('children as c', 'i.child_id', '=', 'c.id')
         .select('*')
         .where('i.parent_id', parent_id)
+}
+
+function deleteParentById(id) {
+    return db('parents').where({id}).del()
 }
 

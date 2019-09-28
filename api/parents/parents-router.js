@@ -149,6 +149,20 @@ router.post('/login', async (req, res) => {
 
 })
 
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await Parents.deleteParentById(id)
+        if(!result) {
+            res.status(404).json({ message: `Could not find parent with id: ${id}`} )
+        } else {
+            res.status(200).json(result)
+        }
+    } catch(error) {
+        res.status(500).json({ message: `Error deleting parent with id ${id}` })
+    }
+})
+
 
 function generateToken(user) {
     const payload = {
