@@ -171,6 +171,21 @@ router.get('/get/ppd', (req, res) => {
         })
 })
 
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await Doctors.deleteDoctorById(id)
+        if(!result) {
+            res.status(404).json({ message: `Could not find doctor with id: ${id}`} )
+        } else {
+            res.status(200).json(result)
+        }
+    } catch(error) {
+        res.status(500).json({ message: `Error deleting doctor with id ${id}` })
+    }
+})
+
 // --------------------FIX THIS
 // router.get('/immunizations/parent/:id', async (req, res) => {
 //     const { id } = req.params

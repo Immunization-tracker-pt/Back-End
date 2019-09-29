@@ -149,6 +149,20 @@ router.post('/login', async (req, res) => {
 
 })
 
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await Parents.deleteParentById(id)
+        if(!result) {
+            res.status(404).json({ message: `Could not find parent with id: ${id}`} )
+        } else {
+            res.status(200).json(result)
+        }
+    } catch(error) {
+        res.status(500).json({ message: `Error deleting parent with id ${id}` })
+    }
+})
+
 
 function generateToken(user) {
     const payload = {
@@ -164,16 +178,11 @@ function generateToken(user) {
     return jwt.sign(payload, process.env.JWT_SECRET, options)
 }
 
-// esting
-
 router.post('/new', async (req, res) => {
     // Expects a parent object, with an array of children
     const { parent, children } = req.body
     try {
-        // Create parent and get ID back
-        // With new parent ID, create the children with the new parent's ID
-        const newFamily = await Parents.addParentWithChildren(parent, children)
-        console.log("NEWFAMWUT", newFamily)
+        const newFamily = await Parents.addParentWithChildren(parent, children) // addParentWithChildren creates the parent, their children, as well as preset immunization reocrds.
         res.status(201).json({
             message: "Successful",
             data: newFamily
@@ -182,11 +191,8 @@ router.post('/new', async (req, res) => {
     catch (error) {
         res.status(500).json({ message: "error", error})
     }
-    
-    // For each child, create initial immunizations
-
-    // Return the new parent, an array of the paren'ts children, and an array of all the children's immunization records
 })
+
 
 
 module.exports = router

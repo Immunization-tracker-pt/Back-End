@@ -15,7 +15,8 @@ module.exports = {
     requestPermission,
     revokePermissionRequest,
     getAllParentDoctorDetails,
-    createDoctorParentRelationship
+    createDoctorParentRelationship,
+    deleteDoctorById,
 }
 
 function find() {
@@ -116,4 +117,17 @@ function getImmunizationsByChildId(child_id) {
 
 function getAllParentDoctorDetails() {
     return db('parent_doctor_detail')
+}
+
+async function deleteDoctorById(id) {
+    try {
+        const delDoctorCount = await db('doctors').where({id}).del()
+        const delParentDoctorDetailCount = await db('parent_doctor_detail').where( {doctor_id: id} ).del()
+
+        // return total number of records deleted.
+        return delDoctorCount + delParentDoctorDetailCount
+    } catch (error) {
+        return error
+    }
+
 }

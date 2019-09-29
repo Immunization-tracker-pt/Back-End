@@ -49,9 +49,6 @@ router.post('/', (req, res) => {
         })
 })
 
-// testing
-
-
 
 router.post('/:id/children/immunizations', async (req, res) => {
     const children = req.body
@@ -61,7 +58,6 @@ router.post('/:id/children/immunizations', async (req, res) => {
         const savedChildren = await Children.addChildren(children, parent_id)
         const immunizations = await Immunizations.findBy({parent_id})
         res.status(200).json({
-            message: "yo",
             children: savedChildren,
             immunizations
         })
@@ -71,6 +67,20 @@ router.post('/:id/children/immunizations', async (req, res) => {
 
     }
 
+})
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await Children.deleteChildById(id)
+        if(!result) {
+            res.status(404).json({ message: `Could not find child with id: ${id}`} )
+        } else {
+            res.status(200).json(result)
+        }
+    } catch(error) {
+        res.status(500).json({ message: `Error deleting child with id ${id}` })
+    }
 })
 
 

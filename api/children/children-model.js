@@ -7,7 +7,9 @@ module.exports = {
     findById,
     add,
     addChildren,
-    getChildrenImmunizationsByChildId
+    getChildrenImmunizationsByChildId,
+    deleteChildBy,
+    deleteChildById
 }
 
 function find() {
@@ -30,7 +32,6 @@ function add(child) {
 }
 
 function addChildren(children, parent_id) {
-    // console.log('childnre', children)
     const numOfChildren = children.length
     return db('children').insert(children)
         .then(() => {
@@ -86,5 +87,13 @@ function getChildImmunizationsByParentId(parent_id) {
         .join('children as c', 'i.child_id', '=', 'c.id')
         .select('*')
         .where('i.parent_id', parent_id)
+}
+
+function deleteChildById(id){
+    return db('children').where({id}).del()
+}
+
+function deleteChildBy(filter){
+    return db('children').where(filter).del()
 }
 
