@@ -1,5 +1,6 @@
 const db = require('../../data/dbConfig.js')
 const Children = require('../children/children-model.js')
+const Immunizations = require('../immunizations/immunizations-model.js')
 
 module.exports = {
     find,
@@ -66,7 +67,20 @@ function getChildImmunizationData(parent_id) {
         .where('i.parent_id', parent_id)
 }
 
-function deleteParentById(id) {
-    return db('parents').where({id}).del()
+async function deleteParentById(id) {
+    try {
+        const delParentCount = await db('parents').where({id}).del()
+        const delChildCount = await Children.deleteChildBy({ parent_id: id })
+        const delImmunizationCount = await Immunizations.deleteImmunizationBy({parent_id: id})
+        const delPDDCount = await db('parent_doctor_detail').where({parent_id: id}).del()
+
+        console.log(`check delparent: ${delParentCount}, delChildCount: ${delChildCount}, delImmunizationCount: ${delImmunizationCount}, delPDDCount: ${delPDDCount}`)
+        
+        // return total amount of records deleted.
+        return delParentCount + delChildCount + delImmunizationCount + delPDDCount
+
+    } catch(error) {
+        return error
+    }
 }
 

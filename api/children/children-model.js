@@ -32,7 +32,6 @@ function add(child) {
 }
 
 function addChildren(children, parent_id) {
-    // console.log('childnre', children)
     const numOfChildren = children.length
     return db('children').insert(children)
         .then(() => {
@@ -95,6 +94,6 @@ function deleteChildById(id){
 }
 
 function deleteChildBy(filter){
-    return db('chilren').where({filter}).del()
+    return db('children').where(filter).del()
 }
 

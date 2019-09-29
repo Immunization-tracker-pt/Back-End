@@ -119,6 +119,15 @@ function getAllParentDoctorDetails() {
     return db('parent_doctor_detail')
 }
 
-function deleteDoctorById(id) {
-    return db('doctors').where({id}).del()
+async function deleteDoctorById(id) {
+    try {
+        const delDoctorCount = await db('doctors').where({id}).del()
+        const delParentDoctorDetailCount = await db('parent_doctor_detail').where( {doctor_id: id} ).del()
+
+        // return total number of records deleted.
+        return delDoctorCount + delParentDoctorDetailCount
+    } catch (error) {
+        return error
+    }
+
 }

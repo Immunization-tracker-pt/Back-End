@@ -7,7 +7,9 @@ module.exports = {
     findById,
     findByChildId,
     add,
-    addInitialImmunizations
+    addInitialImmunizations,
+    deleteImmunizationBy,
+    deleteImmunizationById
 }
 
 function find() {
@@ -47,4 +49,12 @@ function addInitialImmunizations(parent_id, child_id) {
             return findByChildId(child_id)
             
         })
+}
+
+function deleteImmunizationById(id) {
+    return db('immunizations').where({id}).del()
+}
+
+function deleteImmunizationBy(filter) {
+    return db('immunizations').where(filter).del()
 }
