@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const restricted = require('../../auth/auth-middleware.js')
+const authParent = require('../../auth/auth-parent-middleware.js')
 
 const Parents = require('./parents-model.js')
 
@@ -149,7 +150,7 @@ router.post('/login', async (req, res) => {
 
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authParent, async (req, res) => {
     const { id } = req.params
     try {
         const result = await Parents.deleteParentById(id)

@@ -2,6 +2,8 @@ const router = require('express').Router()
 const Children = require('./children-model.js')
 const Immunizations = require('../immunizations/immunizations-model.js')
 
+const authParent = require('../../auth/auth-parent-middleware.js')
+
 router.get('/', (req, res) => {
     Children.find()
         .then(children => {
@@ -69,7 +71,7 @@ router.post('/:id/children/immunizations', async (req, res) => {
 
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authParent, async (req, res) => {
     const { id } = req.params
     try {
         const result = await Children.deleteChildById(id)

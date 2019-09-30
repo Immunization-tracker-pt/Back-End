@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const Doctors = require('./doctors-model')
 const Parents = require('../parents/parents-model.js')
 
+const authDoctor = require('../../auth/auth-doctor-middleware.js')
+
 
 router.get('/', (req, res) => {
     Doctors.find()
@@ -172,7 +174,7 @@ router.get('/get/ppd', (req, res) => {
 })
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authDoctor, async (req, res) => {
     const { id } = req.params
     try {
         const result = await Doctors.deleteDoctorById(id)
@@ -186,20 +188,6 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-// --------------------FIX THIS
-// router.get('/immunizations/parent/:id', async (req, res) => {
-//     const { id } = req.params
-//     try {
-//         const immunizations = await Doctors.getImmunizationsByParentId(id)
-//         if(immunizations.length < 1) {
-//             res.status(404).json({
-//                 message: `Could not find immunizations with parent id: ${id}`
-//             })
-//         }
-//     } catch(error) {
-//         res.status(500).json({ message: `Could not get immunizations for parent id: ${id}`})
-//     }
-// })
 
 function generateToken(user) {
     const payload = {
