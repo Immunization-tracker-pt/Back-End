@@ -2,6 +2,8 @@ const router = require('express').Router()
 
 const Immunizations = require('./immunizations-model.js')
 
+const authDoctor = require('../../auth/auth-doctor-middleware.js')
+
 
 router.get('/', (req, res) => {
     Immunizations.find()
@@ -63,6 +65,21 @@ router.post('/', (req, res) => {
                 dbError: error
             })
         })
+})
+
+router.delete('/:id', authDoctor, async (req, res) => {
+    const { id } = req.params
+    try {
+        const delImmunizationCount = await Immunizations.deleteImmunizationById(id)
+        if(!delImmunizationCount >= 1) {
+            res.status(404).json({ message: `No Immunization record with id ${id}`})
+        } else {
+            res.status(200).json(delImmunizationCount)
+        }
+        
+    } catch (error) {
+        res.status(500).json({ message: `Error deleting Immunization record from server`}, error )
+    }
 })
 
 

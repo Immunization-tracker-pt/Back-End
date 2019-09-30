@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const Doctors = require('../doctors/doctors-model.js')
+const Parents = require('../parents/parents-model.js')
+
+const restricted = require('../../auth/auth-middleware.js') // does not check for type of user
 
 
 router.get('/', async (req, res) => {
@@ -84,6 +87,21 @@ router.post('/:parent_id/:doctor_id', async (req, res) => {
         })
     }
 
+})
+
+router.delete('/:parent_id/:doctor_id', restricted, async (req, res) => {
+    const { parent_id, doctor_id } = req.params
+    try {
+        const delPPDCount = await Parents.deletePDD(parent_id, doctor_id)
+        if(delPPDCount === 0) {
+            res.status(404).json({ message: `Could not find a record with parent_id: ${parent_id} and doctor_id: ${doctor_id}`})
+        } else {
+            res.status(200).json(delPPDCount)
+        }
+          
+    } catch (error) {
+        res.status(500).json({ message: `Error deleting PPD from server` })
+    }
 })
 
 module.exports = router

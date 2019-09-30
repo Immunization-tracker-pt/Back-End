@@ -11,7 +11,8 @@ module.exports = {
     getParentDoctorData,
     getChildImmunizationData,
     addParentWithChildren,
-    deleteParentById
+    deleteParentById,
+    deletePDD
 }
 
 function find() {
@@ -81,6 +82,17 @@ async function deleteParentById(id) {
 
     } catch(error) {
         return error
+    }
+}
+
+async function deletePDD(parent_id, doctor_id) {
+    try{
+        const delPDDCount = await db('parent_doctor_detail').where({ parent_id, doctor_id }).del()
+        return delPDDCount
+        
+        
+    } catch(error) {
+        
     }
 }
 
